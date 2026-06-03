@@ -1,0 +1,11 @@
+INPUTS  : x,w1,w2,w_skip,scale,scale,bias
+OUTPUTS : y
+
+n1: Conv(x, w1)     ->a
+n2: ReLU(a)         ->b
+n3: Conv(b, w2)     ->c
+n4: Conv(x, w_skip) ->s
+n5: Add(c, s)       ->d
+n6: Relu(d)         ->e
+n7: Mul(e, scale)   ->f
+n8: Add(f, bias)    ->y
