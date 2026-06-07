@@ -46,26 +46,28 @@ void matmul_tiled(float *A,
   int n = N/TILE;
   int k = K/TILE;
 
-  
-  for(int row_A =0;row_A<m;row_A++){
-    for(int col_A=0;col_A<k;col_A++){
-      for(int row_B=0;row_B<k;row_B++){
-        for(int col_B=0;col_B<n;col_B++){
+  for(int rowBlock_A = 0 ; rowBlock_A < m ; rowBlock_A++){
+    for(int colBlock_B = 0 ; colBlock_B<n ; colBlock_B++){
 
-          for(int i = row_A*TILE;i<(row_A+1)*TILE;i++){
-            for(int j = col_B*TILE;j<(col_B+1)*TILE;j++){
-              float sum = 0;
-              for(int kk = 0 ; kk<k;kk++){
-                sum+=A[i*K+kk]*B[kk*N+j];
-              }
-              C[row_A*N+col_B]+= sum;
+      for(int index = 0 ; index < k ; index++){
+
+        for(int i = rowBlock_A*TILE ; i<(rowBlock_A+1)*TILE ; i++ ){
+
+          for(int j = colBlock_B*TILE ; j < (colBlock_B+1)*TILE ; j++ ){
+            
+            int sum = 0;
+            for(int dot = index*TILE ; dot<(index+1)*TILE;dot++){
+             
+            //****************AUTO VECTORIZATION**************************  
+              sum+=A[i*K+dot]*B[dot*N+j]; 
+            //****************AUTO VECTORIZATION**************************
             }
+            C[i*N+j] += sum;
           }
         }
       }
     }
-  } 
-
+  }
 }
 
 int main(int argc , char **argv){
@@ -97,5 +99,4 @@ int main(int argc , char **argv){
   matmul_tiled(A,B,C,M,N,K,TILE);
   mat_print(C,M,N);
 
-  
 }
