@@ -45,7 +45,7 @@ public:
 void trimmer(char *line){
 
   char *ptr = line;
-  while(*ptr != '\n' && *ptr != EOF ){
+  while(*ptr != EOF && *ptr != '\n' ){
     ptr++;
   }
   *ptr = '\0';
@@ -53,7 +53,7 @@ void trimmer(char *line){
 
 int main(){
   
-  FILE *ptr = fopen("i.txt","r");
+  FILE *ptr = fopen("input.txt","r");
   char line[1000];
   
   char *curr;
@@ -92,8 +92,7 @@ int main(){
   }
 
   //OUTPUTS
-  //multiple outputs later.
-  //--------------------------------------__________----------____________------____
+  //multiple outputs , solve it later
   fgets(line,sizeof(line),ptr);
   trimmer(line);
   strtok(line,": ");
