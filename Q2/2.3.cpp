@@ -29,7 +29,7 @@ optional<vector<int64_t>> broadcastShape(vector<int> &a,vector <int> &b){
     rank = rank_b;
     rank_a = rank;
   }
-  else if(rank_a<rank_b){
+  else if(rank_a>rank_b){
     
     int diff = rank_a - rank_b;
     b.insert(b.begin(),diff,1);
